@@ -1,0 +1,267 @@
+{
+  "name": "Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "trigger": [
+          "message"
+        ],
+        "channelId": {
+          "__rl": true,
+          "value": "C0AMPV073TP",
+          "mode": "list",
+          "cachedResultName": "all-self"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        -96
+      ],
+      "id": "935d0789-95db-4d74-9f94-bfcb5527ed40",
+      "name": "Slack Trigger",
+      "webhookId": "cd0a78f4-3bd1-41d1-a354-847d4d3144e0",
+      "credentials": {
+        "slackApi": {
+          "id": "5a941yFrqDjZY0Ym",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://feeds.feedburner.com/TechCrunch/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -368,
+        -160
+      ],
+      "id": "81cf149b-d778-4f3b-a770-ae9c148cf22b",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "sendTo": "genaisocial2026@gmail.com",
+        "subject": "=newsletter",
+        "message": "=Here the latest articles: {{ $json.digest }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        -160
+      ],
+      "id": "c9151ab3-4e37-4b37-8ed9-d3532fcbefb8",
+      "name": "Send a message",
+      "webhookId": "600cf678-c5ab-4585-a747-77f33f9016ec",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "AMZG3DePOoNlZsf4",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AMPV073TP",
+          "mode": "list",
+          "cachedResultName": "all-self"
+        },
+        "text": "=Newsletter emails sent successfully ✅\n\nLatest Article: {{ $('Edit Fields').item.json.digest }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        464,
+        -160
+      ],
+      "id": "d737c82b-ba44-47f4-9f1b-bf3d137e7dad",
+      "name": "Send a message1",
+      "webhookId": "bf4eb733-73f9-449a-ba00-bd41a7b93355",
+      "credentials": {
+        "slackApi": {
+          "id": "5a941yFrqDjZY0Ym",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "={{ \"• \" + $json.title + \"\\n\" + $json.link + \"\\n\\n\" }}",
+        "options": {
+          "includeBinaries": false
+        }
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -160
+      ],
+      "id": "7ae8b99c-8b55-4340-83c1-d971118a3aa2",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d2c7a216-0749-4d8e-b033-373b51caa7e2",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "array"
+            },
+            {
+              "id": "ebd78004-b0ec-47fe-9676-876d1cc15bb5",
+              "name": "digest",
+              "value": "={{(() => {\nconst items = $json.data;\nreturn items.map(i => \"• \" + i.title + \"\\n\\n\" + i.link).join(\"\\n\\n\");\n})()}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        48,
+        -160
+      ],
+      "id": "acddf5da-0733-4a08-a16f-89a28479233e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5aab7a3e-d763-40a8-a998-0b5aa1ab1562",
+              "leftValue": "={{ $json.text }}",
+              "rightValue": "newsletter",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -576,
+        -96
+      ],
+      "id": "951f4395-7ca8-4ca3-a7a6-4dd71415e127",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Slack Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1
+  },
+  "versionId": "ba0be565-4400-4061-8d33-82233ae73ec6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "46a440518a1fca12f68a1d6e9861741e0afdd47bf48bbe019dda6a2d55ccee17"
+  },
+  "id": "a13SkCDLZqUqndqs",
+  "tags": []
+}

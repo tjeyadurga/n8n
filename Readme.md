@@ -51,59 +51,93 @@ npm install n8n -g
 n8n
 3️⃣ Open in Browser
 http://localhost:5678
-📥 Import Workflow
-Open n8n dashboard
-Click Import from File
-Select exported .json workflow file
-Save and Activate workflow
-🔑 Environment Variables
 
 ---
+
+📥 Import Workflow
+
+Open n8n dashboard
+
+Click Import from File
+
+Select exported .json workflow file
+
+Save and Activate workflow
+
+---
+
+🔑 Environment Variables
 
 Create .env file if required:
 
 SLACK_API_KEY=your_key
+
 OPENAI_API_KEY=your_key
+
 GMAIL_USER=your_email
+
 GMAIL_PASS=your_password
 
 ---
 
 ▶️ Usage
+
 Activate workflow in n8n
+
 Trigger manually or automatically
+
 Monitor execution logs inside n8n dashboard
 
 ---
 
 📊 Example Use Cases
+
 Slack message automation
+
 Daily digest email reports
+
 Lead capture from forms
+
 API data sync
+
 AI chatbot workflows
+
 CRM automation
 
 ---
 
 🐞 Troubleshooting
+
 Workflow not auto-running?
+
 Ensure workflow is Activated
+
 Check trigger node settings
+
 Verify credentials
+
 API errors?
+
 Recheck API keys
+
 Confirm endpoint URLs
+
 Check rate limits
+
 Gmail sends only one message?
+
 Use Aggregate Node + Loop logic correctly
 
 ---
 
 📌 Future Enhancements
+
 Add AI integrations
+
 Advanced branching logic
+
 Database logging
+
 Multi-user workflows
 
 ---

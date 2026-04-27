@@ -42,14 +42,32 @@ Example flow:
 
 ## ⚙️ Installation
 
+Download and install Node.js from the official site:
+
+Node.js Foundation
+
+Choose the LTS version.
+
+After install, open Command Prompt and check:
+
+node -v
+npm -v
+
+If both show versions, you're ready.
+
+
 ### 1️⃣ Install n8n
 
 ``bash
+
 npm install n8n -g
 
 2️⃣ Start n8n
+
 n8n
+
 3️⃣ Open in Browser
+
 http://localhost:5678
 
 ---

@@ -1,0 +1,154 @@
+{
+  "name": "PDF Summary",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -400,
+        -32
+      ],
+      "id": "b0e67cae-f099-4e0c-9ed8-5fa5c0422c64",
+      "name": "Telegram Trigger",
+      "webhookId": "954587ad-c06e-47fe-ab0c-db9b104bbb6f",
+      "credentials": {
+        "telegramApi": {
+          "id": "LvAcETZunEKbBRul",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -192,
+        -32
+      ],
+      "id": "f4799266-494e-4daa-b0a8-3b9af85ee15d",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=summary the below input text {{ $json.text }}"
+            },
+            {
+              "role": "system",
+              "content": "you should give the highlighted points important topics in single page. Format should be in readable form and easy to understand overall concepts."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        16,
+        -32
+      ],
+      "id": "1da509a3-5f55-4f41-86cd-043f7081db77",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "IUYBKc2zW4eD3ypF",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output[0].content[0].text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        368,
+        -32
+      ],
+      "id": "ecc43298-8519-47e3-b4d9-4277acd90411",
+      "name": "Send a text message",
+      "webhookId": "e660c473-a60d-497d-b55b-fc1685e2f5d0",
+      "credentials": {
+        "telegramApi": {
+          "id": "LvAcETZunEKbBRul",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "a3ad5635-c7f2-4047-b57d-4032c6e01420",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "46a440518a1fca12f68a1d6e9861741e0afdd47bf48bbe019dda6a2d55ccee17"
+  },
+  "id": "ECVwuoX8QVGpc1Px",
+  "tags": []
+}

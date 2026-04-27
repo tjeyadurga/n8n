@@ -1,0 +1,182 @@
+{
+  "name": "Title to podcast",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -256,
+        -16
+      ],
+      "id": "6368aa40-030d-48d7-9ff4-0c81e16a1f9b",
+      "name": "Telegram Trigger",
+      "webhookId": "842da2f2-85b0-4be7-86d2-350871098b1d",
+      "credentials": {
+        "telegramApi": {
+          "id": "LvAcETZunEKbBRul",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write a 60second script for below title:  {{ $json.message.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "you are a skilled script writer and able to generate a script for 60 seconds. write a thrilling script for the user given title with some twist and turns. i am planning to post this script in my social media and it will boost my social presence, so add the authority statement in the scripts.\n\ntone: bold and story telling"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -48,
+        -16
+      ],
+      "id": "01f8d647-d727-4e6c-ae80-6357cf7caec3",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -128,
+        192
+      ],
+      "id": "98f9e442-08f5-4b92-8e32-21971e9a7863",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "IUYBKc2zW4eD3ypF",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "input": "={{ $json.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        304,
+        -16
+      ],
+      "id": "f5de3650-7793-437a-8b47-e3b5a186e3e9",
+      "name": "Generate audio",
+      "credentials": {
+        "openAiApi": {
+          "id": "IUYBKc2zW4eD3ypF",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAudio",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        512,
+        -16
+      ],
+      "id": "254d639a-05f6-42b0-8722-6d02ae44276b",
+      "name": "Send an audio file",
+      "webhookId": "a09bea38-3674-423f-9891-fc04418789b3",
+      "credentials": {
+        "telegramApi": {
+          "id": "LvAcETZunEKbBRul",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Generate audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate audio": {
+      "main": [
+        [
+          {
+            "node": "Send an audio file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "a331f8bd-6f4d-4d9a-a8bb-5683e66e7f6c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "46a440518a1fca12f68a1d6e9861741e0afdd47bf48bbe019dda6a2d55ccee17"
+  },
+  "id": "xvNPARFBC03piS0c",
+  "tags": []
+}

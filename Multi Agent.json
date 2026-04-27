@@ -1,0 +1,190 @@
+{
+  "name": "Multi Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -304,
+        -128
+      ],
+      "id": "242a8f0f-7f64-46e8-a429-7792e9b9ae45",
+      "name": "When chat message received",
+      "webhookId": "77dda85b-c5ce-4c86-8f31-36353c70bbfa"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=you are an intelligent agent.call agent when user wants to search information in internet do wen search {{ $json.chatInput }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -96,
+        -128
+      ],
+      "id": "b5d36bd7-17eb-4768-a3e8-d39e514082bc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -240,
+        80
+      ],
+      "id": "c5776a3f-cf49-406c-8ebc-373904a1e34f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "IUYBKc2zW4eD3ypF",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=answer the user query if user wants web search or current news call serpapi tool {{ $json.chatInput }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [
+        64,
+        80
+      ],
+      "id": "08397ba3-ca27-4f64-854f-a6b45c7df7a0",
+      "name": "AI Agent Tool"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        304,
+        256
+      ],
+      "id": "10910e05-f3f2-40cb-bd54-1ae9e194a29c",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "OYjEgWhfTUxJc2y1",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        256
+      ],
+      "id": "7301d092-fb12-48aa-b9b0-508795cb9433",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "IUYBKc2zW4eD3ypF",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent Tool",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Tool",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "227ac9e4-f1fc-43ab-886b-6cc21ecedbc5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "46a440518a1fca12f68a1d6e9861741e0afdd47bf48bbe019dda6a2d55ccee17"
+  },
+  "id": "diIZii6vqpEvbC3z",
+  "tags": []
+}

@@ -1,0 +1,400 @@
+{
+  "name": "MCP_Demo",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -640,
+        -144
+      ],
+      "id": "8c7bee4c-0ba7-4267-8d0b-d03df4eb87b8",
+      "name": "When chat message received",
+      "webhookId": "cdc56e14-a2de-44f2-b913-c794aca32870"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=you are an intelligent agent to answer the user query: {{ $json.chatInput }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -432,
+        -144
+      ],
+      "id": "0ae22ad8-a331-444c-b777-f4b45decab8c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -576,
+        64
+      ],
+      "id": "a490f82a-b6e5-46b2-b8dc-656db819b5ba",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "IUYBKc2zW4eD3ypF",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -432,
+        64
+      ],
+      "id": "04953e55-7484-4a05-bd91-03e7813dc822",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "path": "MCP_Demo"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        256,
+        -160
+      ],
+      "id": "d76309f4-0f6f-48b2-a35a-4df7e670708d",
+      "name": "MCP Server Trigger",
+      "webhookId": "bf2d56c1-bc8a-4ea3-893e-82ed66dcc967"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        48
+      ],
+      "id": "a16d13cd-c398-48a4-b1b9-dd527a1a1a4e",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "OYjEgWhfTUxJc2y1",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        0,
+        48
+      ],
+      "id": "76f771cc-05d3-410b-8f0d-5b0f5bd5d6dc",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        48
+      ],
+      "id": "bc675e9b-59c1-4051-89ea-8c30713a510f",
+      "name": "send gmail",
+      "webhookId": "bb6c4d16-9f05-4334-afed-47670ba5b3e2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "AMZG3DePOoNlZsf4",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "10Aj64TZuEmDipvU40WQPzuHrwTSdQn4O-QQ1akS5G00",
+          "mode": "list",
+          "cachedResultName": "customer reviews",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10Aj64TZuEmDipvU40WQPzuHrwTSdQn4O-QQ1akS5G00/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1235884370,
+          "mode": "list",
+          "cachedResultName": "review",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10Aj64TZuEmDipvU40WQPzuHrwTSdQn4O-QQ1akS5G00/edit#gid=1235884370"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        288,
+        48
+      ],
+      "id": "053365ef-595f-4ae5-bb41-23818dc130e7",
+      "name": "gsheet_getrow",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FQt6GHHv3ftc9J00",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "10Aj64TZuEmDipvU40WQPzuHrwTSdQn4O-QQ1akS5G00",
+          "mode": "list",
+          "cachedResultName": "customer reviews",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10Aj64TZuEmDipvU40WQPzuHrwTSdQn4O-QQ1akS5G00/edit?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTool",
+      "typeVersion": 3,
+      "position": [
+        432,
+        48
+      ],
+      "id": "814bcb1d-85c6-474f-88a8-758b7c5eafc7",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "HQaBZbiCTtw2LphQ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "https://docs.google.com/document/d/1uPNtTTNi7x7BJdWB1sPF_gnuHn3OsId4qNunUKLruWo/edit?tab=t.0"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        576,
+        48
+      ],
+      "id": "65d18aa3-adac-48b1-a837-a05cfc564732",
+      "name": "Google Docs",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eVIJoFEZeaTAEZxt",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Calendar', ``, 'string') }}",
+          "mode": "id",
+          "__regex": "(^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*)"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        720,
+        48
+      ],
+      "id": "9730443c-b239-4525-a32b-ca01f12162cc",
+      "name": "Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5DQVY5Mv2Tys1HHm",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://n8n.srv1415114.hstgr.cloud/mcp/MCP_Demo",
+        "include": "except",
+        "excludeTools": [
+          "Call_19-ai-marketing-report-_google-analytics-_-ads_-meta-ads_-sent-via-email_telegram_"
+        ],
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        -320,
+        64
+      ],
+      "id": "569731c0-5795-40f7-b9af-a13e82ba0870",
+      "name": "MCP Client"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gsheet_getrow": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Docs": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "391c8a90-77af-4169-a359-57e74ac2d66f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "46a440518a1fca12f68a1d6e9861741e0afdd47bf48bbe019dda6a2d55ccee17"
+  },
+  "id": "37VGo0YJDMMH22zl",
+  "tags": []
+}

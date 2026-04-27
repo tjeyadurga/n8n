@@ -58,16 +58,24 @@ Select exported .json workflow file
 Save and Activate workflow
 🔑 Environment Variables
 
+---
+
 Create .env file if required:
 
 SLACK_API_KEY=your_key
 OPENAI_API_KEY=your_key
 GMAIL_USER=your_email
 GMAIL_PASS=your_password
+
+---
+
 ▶️ Usage
 Activate workflow in n8n
 Trigger manually or automatically
 Monitor execution logs inside n8n dashboard
+
+---
+
 📊 Example Use Cases
 Slack message automation
 Daily digest email reports
@@ -75,6 +83,9 @@ Lead capture from forms
 API data sync
 AI chatbot workflows
 CRM automation
+
+---
+
 🐞 Troubleshooting
 Workflow not auto-running?
 Ensure workflow is Activated
@@ -86,11 +97,17 @@ Confirm endpoint URLs
 Check rate limits
 Gmail sends only one message?
 Use Aggregate Node + Loop logic correctly
+
+---
+
 📌 Future Enhancements
 Add AI integrations
 Advanced branching logic
 Database logging
 Multi-user workflows
+
+---
+
 👨‍💻 Author
 
 Built with ❤️ using n8n automation.
